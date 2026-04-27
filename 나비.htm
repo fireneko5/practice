@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>함평나비대축제 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400&family=DM+Mono:wght@300&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;overflow:hidden;}
+:root{
+  --bk:#1A1E22;--dk:#07090b;--sl:#B8C4CE;--or:#D4622A;--iv:#F2ECD8;--md:#2C333B;
+  --serif:'Cormorant Garamond',serif;--kr:'Noto Serif KR',serif;--mono:'DM Mono',monospace;
+}
+.page{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity .55s ease;background:var(--bk);overflow:hidden;}
+.page.active{opacity:1;pointer-events:all;}
+#back-btn{position:fixed;top:22px;left:22px;z-index:999;display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;letter-spacing:2px;color:#fff;opacity:0;pointer-events:none;background:none;border:none;cursor:pointer;transition:opacity .3s;}
+#back-btn.show{opacity:.5;pointer-events:all;}
+#back-btn svg{width:14px;height:14px;}
+.stars{position:absolute;inset:0;pointer-events:none;z-index:1;}
+.star{position:absolute;border-radius:50%;background:var(--sl);animation:twinkle var(--dur,3s) ease-in-out infinite var(--dly,0s);}
+@keyframes twinkle{0%,100%{opacity:var(--lo,.06);}50%{opacity:var(--hi,.32);}}
+@keyframes wL{0%,100%{transform:rotate(0deg);}50%{transform:rotate(-6deg);}}
+@keyframes wR{0%,100%{transform:rotate(0deg);}50%{transform:rotate(6deg);}}
+@keyframes rise{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes floatB{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+/* ── INTRO OVERLAY ── */
+#intro-overlay{position:fixed;inset:0;z-index:200;background:var(--dk);}
+#intro-b{position:absolute;top:50%;left:50%;transform:translate(-55vw,-42vh) scale(.14) rotate(22deg);opacity:0;will-change:transform,opacity;}
+#intro-b.flying{animation:bf-fly 2s cubic-bezier(0.2,0.85,0.3,1) forwards;}
+@keyframes bf-fly{
+  0%  {transform:translate(-55vw,-42vh) scale(.14) rotate(0deg);opacity:0;}
+  8%  {opacity:1;}
+  100%{transform:translate(-50%,-50%) scale(0.28) rotate(0deg);opacity:1;}
+}
+#intro-b .gL{animation:wL .24s ease-in-out infinite;transform-origin:250px 162px;}
+#intro-b .gR{animation:wR .24s ease-in-out infinite;transform-origin:250px 162px;}
+#intro-b.landing .gL{animation:wL 3.5s ease-in-out infinite;transform-origin:250px 162px;}
+#intro-b.landing .gR{animation:wR 3.5s ease-in-out infinite;transform-origin:250px 162px;}
+/* 수면 파문 효과 */
+#ripple-wrap{position:absolute;top:50%;left:50%;pointer-events:none;z-index:5;}
+.ripple-ring{
+  position:absolute;
+  transform:translate(-50%,-50%) scale(0);
+  border-radius:50%;
+  opacity:0;
+  border:3px solid rgba(184,196,206,.85);
+}
+@keyframes ringExpand{
+  0%  {transform:translate(-50%,-50%) scale(0.02);opacity:1;}
+  50% {opacity:.55;}
+  100%{transform:translate(-50%,-50%) scale(18);opacity:0;}
+}
+
+/* ── PAGE 1 MAIN ── */
+#page-main{background:var(--bk);}
+#main-b-bg{position:absolute;top:50%;left:50%;transform:translate(21vw,27vh) scale(.84);transform-origin:center center;opacity:0.14;pointer-events:none;z-index:2;animation:floatB 9s ease-in-out infinite;}
+#main-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;padding-bottom:48px;opacity:0;transition:opacity .7s ease;}
+.mc-tag{font-family:var(--mono);font-size:clamp(11px,1.3vw,14px);letter-spacing:4px;color:var(--or);margin-bottom:18px;}
+.mc-title{font-family:var(--serif);font-weight:300;font-size:clamp(58px,10vw,120px);line-height:.92;letter-spacing:-.5px;color:var(--iv);text-align:center;}
+.mc-title em{display:block;font-style:italic;color:var(--or);}
+.mc-ko{font-family:var(--kr);font-weight:200;font-size:clamp(18px,2.5vw,28px);letter-spacing:3px;color:#fff;margin-top:16px;margin-bottom:10px;white-space:nowrap;}
+.mc-date{font-family:var(--mono);font-size:clamp(12px,1.4vw,15px);letter-spacing:2px;color:#fff;opacity:.65;margin-bottom:36px;}
+.mc-date span{color:var(--or);margin:0 6px;}
+.mc-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.btn-g{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(242,236,216,.3);padding:13px 28px;border-radius:40px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:#fff;background:none;cursor:pointer;transition:background .3s,border-color .3s;}
+.btn-g:hover{background:rgba(212,98,42,.1);border-color:var(--or);}
+.btn-o{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--or);padding:13px 28px;border-radius:40px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--or);background:rgba(212,98,42,.07);cursor:pointer;transition:background .3s;}
+.btn-o:hover{background:rgba(212,98,42,.18);}
+.mc-touch{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;letter-spacing:3px;color:#fff;opacity:.4;}
+
+/* ── daepyo overlay ── */
+#dov{position:fixed;inset:0;z-index:800;pointer-events:none;opacity:0;}
+#dov::before{content:'';position:absolute;inset:0;background:rgba(5,6,8,.86);opacity:0;transition:opacity .7s ease;}
+#dov.active{opacity:1;pointer-events:all;}
+#dov.active::before{opacity:1;}
+#fly-b{position:absolute;top:50%;left:50%;transform:translate(-120vw,-60vh) scale(.18) rotate(-22deg);opacity:0;will-change:transform,opacity;}
+#fly-b.fly-in{animation:dov-fly 2.2s cubic-bezier(0.18,0.85,0.28,1) forwards;}
+@keyframes dov-fly{
+  0%  {transform:translate(-120vw,-60vh) scale(.18) rotate(-22deg);opacity:0;}
+  5%  {opacity:1;}
+  30% {transform:translate(-60vw,-20vh) scale(.38) rotate(-10deg);}
+  62% {transform:translate(-20vw,2vh) scale(.7) rotate(-3deg);}
+  84% {transform:translate(-52%,-52%) scale(.95) rotate(.5deg);}
+  100%{transform:translate(-50%,-50%) scale(0.45) rotate(0deg);opacity:1;}
+}
+#fly-b .gL{animation:wL .24s ease-in-out infinite;transform-origin:250px 162px;}
+#fly-b .gR{animation:wR .24s ease-in-out infinite;transform-origin:250px 162px;}
+#fly-b.land .gL{animation:wL 4s ease-in-out infinite;transform-origin:250px 162px;}
+#fly-b.land .gR{animation:wR 4s ease-in-out infinite;transform-origin:250px 162px;}
+#fly-b.land{animation:floatB 8s ease-in-out infinite;}
+#fly-lbl{position:absolute;top:50%;left:50%;transform:translate(-50%,12%);z-index:10;text-align:center;pointer-events:none;opacity:0;transition:opacity .7s .15s ease;}
+#dov.labels-on #fly-lbl{opacity:1;}
+.fl-tag{font-family:var(--mono);font-size:12px;letter-spacing:4px;color:var(--or);margin-bottom:10px;}
+.fl-ko{font-family:var(--kr);font-weight:200;font-size:clamp(28px,5vw,44px);letter-spacing:5px;color:#fff;margin-bottom:6px;}
+.fl-en{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(17px,2.5vw,23px);color:#fff;opacity:.7;}
+#fly-btns{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);display:flex;gap:10px;opacity:0;transition:opacity .5s .55s ease;}
+#dov.labels-on #fly-btns{opacity:1;}
+.fb-d{background:var(--or);color:#fff;border:none;padding:13px 26px;border-radius:28px;font-family:var(--mono);font-size:13px;letter-spacing:1.5px;cursor:pointer;transition:background .2s;}
+.fb-d:hover{background:#bf5522;}
+.fb-c{background:rgba(184,196,206,.08);color:#fff;border:1px solid rgba(255,255,255,.25);padding:13px 22px;border-radius:28px;font-family:var(--mono);font-size:13px;letter-spacing:1.5px;cursor:pointer;}
+
+/* ── PAGE 2 FESTIVAL ── */
+#page-festival{background:var(--bk);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.f-hdr{position:relative;z-index:10;text-align:center;margin-bottom:10px;margin-top:-20px;}
+.f-tag{font-family:var(--mono);font-size:12px;letter-spacing:4px;color:var(--or);display:block;margin-bottom:9px;}
+.f-ttl{font-family:var(--serif);font-weight:300;font-size:clamp(32px,6vw,52px);color:#fff;}
+#bnav{position:relative;z-index:10;width:min(600px,92vw);}
+#bnav svg{width:100%;height:auto;overflow:visible;}
+.nwing{cursor:pointer;fill:#B8C4CE;stroke:rgba(255,255,255,.1);stroke-width:.8;transition:fill .22s,filter .22s;}
+.nwing:hover{fill:rgba(212,98,42,.22)!important;filter:brightness(1.3);}
+#bnav-lbl{position:absolute;inset:0;pointer-events:none;}
+.wlabel{position:absolute;text-align:center;transform:translate(-50%,-50%);}
+.wl-num{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--or);margin-bottom:6px;}
+.wl-name{font-family:var(--kr);font-weight:300;font-size:clamp(17px,2.8vw,22px);color:#fff;}
+
+/* ── PAGE 3 SCHEDULE ── */
+#page-schedule{background:var(--bk);overflow-y:auto;padding:44px 18px 36px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;}
+.sc-hdr{text-align:center;margin-bottom:18px;width:100%;max-width:380px;}
+.sc-tag{font-family:var(--mono);font-size:12px;letter-spacing:4px;color:var(--or);display:block;margin-bottom:10px;}
+.sc-ttl{font-family:var(--serif);font-weight:300;font-size:clamp(30px,6vw,46px);color:#fff;margin-bottom:6px;}
+.sc-sub{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:#fff;opacity:.65;}
+.sc-div{width:28px;height:1px;background:var(--or);margin:12px auto;opacity:.6;}
+.cal-wrap{width:100%;max-width:380px;}
+.cal-mhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.cal-mname{font-family:var(--mono);font-size:12px;letter-spacing:3px;color:#fff;opacity:.65;}
+.cal-mbadge{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--or);border:1px solid rgba(212,98,42,.4);padding:3px 10px;border-radius:10px;}
+.cal-dow-row{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px;}
+.cal-dow{font-family:var(--mono);font-size:10px;letter-spacing:1px;color:#fff;opacity:.5;text-align:center;padding:3px 0;}
+.cal-dow.fri{color:var(--or);opacity:.48;}.cal-dow.sat{color:var(--or);opacity:.38;}.cal-dow.sun{color:#e88;opacity:.42;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:7px;font-family:var(--mono);font-size:clamp(13px,2.8vw,16px);color:#fff;opacity:.45;}
+.cal-cell.empty{opacity:0;pointer-events:none;}
+.cal-cell.normal{background:rgba(44,51,59,.45);border:1px solid rgba(184,196,206,.05);cursor:default;}
+.cal-cell.festival{background:rgba(212,98,42,.12);border:1px solid rgba(212,98,42,.28);color:var(--iv);opacity:1;cursor:pointer;transition:background .2s,border-color .2s,transform .18s;position:relative;flex-direction:column;gap:1px;}
+.cal-cell.festival:hover,.cal-cell.festival.sel{background:rgba(212,98,42,.28);border-color:var(--or);transform:scale(1.07);}
+.cal-cell.open-close{background:rgba(212,98,42,.2);border-color:rgba(212,98,42,.45);}
+.cal-cell.festival .cdot{width:3px;height:3px;border-radius:50%;background:var(--or);position:absolute;bottom:4px;}
+.cal-may-wrap{width:100%;max-width:380px;margin-top:5px;}
+.cal-may-hdr{font-family:var(--mono);font-size:11px;letter-spacing:3px;color:#fff;opacity:.55;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.cal-may-hdr::after{content:'';flex:1;height:1px;background:rgba(184,196,206,.07);}
+.cal-may-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+#day-panel{width:100%;max-width:380px;margin-top:12px;background:rgba(40,50,60,.82);border:1px solid rgba(184,196,206,.1);border-radius:14px;padding:16px 18px;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none;}
+#day-panel.show{opacity:1;transform:translateY(0);pointer-events:all;}
+.dp-date{font-family:var(--mono);font-size:12px;letter-spacing:3px;color:var(--or);margin-bottom:14px;}
+.dp-evs{display:flex;flex-direction:column;gap:8px;}
+.dp-ev{display:flex;gap:10px;align-items:flex-start;}
+.dp-time{font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--or);min-width:44px;margin-top:2px;}
+.dp-name{font-family:var(--kr);font-weight:300;font-size:15px;color:#fff;line-height:1.5;}
+
+/* ── PAGE 4 EXHIBITION ── */
+#page-exhibition{background:var(--bk);overflow-y:auto;padding:44px 16px 36px;}
+.ex-hdr{text-align:center;margin-bottom:18px;}
+.ex-tag{font-family:var(--mono);font-size:12px;letter-spacing:4px;color:var(--or);display:block;margin-bottom:10px;}
+.ex-ttl{font-family:var(--serif);font-weight:300;font-size:clamp(30px,6vw,46px);color:#fff;}
+.ex-div{width:28px;height:1px;background:var(--or);margin:12px auto 0;opacity:.6;}
+.ex-feature{max-width:520px;margin:18px auto 0;background:var(--md);border-radius:16px;overflow:hidden;border:1px solid rgba(184,196,206,.1);cursor:pointer;transition:transform .3s,border-color .3s;}
+.ex-feature:hover{transform:translateY(-3px);border-color:rgba(184,196,206,.22);}
+.ex-feature img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
+.ex-feature-body{padding:14px 18px;}
+.ex-fnum{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--or);margin-bottom:6px;}
+.ex-fname{font-family:var(--kr);font-weight:300;font-size:18px;color:#fff;margin-bottom:4px;}
+.ex-fdesc{font-family:var(--kr);font-weight:300;font-size:14px;color:#fff;opacity:.8;line-height:1.7;}
+.ex-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:520px;margin:10px auto 0;}
+.ex-card{background:var(--md);border-radius:14px;overflow:hidden;border:1px solid rgba(184,196,206,.08);cursor:pointer;transition:transform .28s,border-color .28s;}
+.ex-card:hover{transform:translateY(-3px);border-color:rgba(184,196,206,.2);}
+.ex-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
+.ex-card-body{padding:10px 12px;}
+.ex-cnum{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--or);margin-bottom:5px;}
+.ex-cname{font-family:var(--kr);font-weight:300;font-size:15px;color:#fff;margin-bottom:3px;}
+.ex-cdesc{font-family:var(--kr);font-weight:300;font-size:13px;color:#fff;opacity:.75;line-height:1.6;}
+
+/* ── SUB PAGES ── */
+.sub-pg{background:var(--bk);overflow-y:auto;padding:46px 28px 50px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;}
+.sub-ct{max-width:520px;width:100%;text-align:center;}
+.s-tag{font-family:var(--mono);font-size:12px;letter-spacing:4px;color:var(--or);display:block;margin-bottom:13px;}
+.s-ttl{font-family:var(--serif);font-weight:300;font-size:clamp(34px,6vw,54px);color:#fff;line-height:1.1;margin-bottom:18px;}
+.s-div{width:28px;height:1px;background:var(--or);margin:0 auto 20px;opacity:.6;}
+.s-body{font-family:var(--kr);font-weight:300;font-size:16px;line-height:2;color:#fff;opacity:.85;margin-bottom:20px;text-align:left;}
+.s-list{list-style:none;text-align:left;display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.s-list li{display:flex;gap:12px;align-items:flex-start;}
+.il-dot{width:5px;height:5px;border-radius:50%;background:var(--or);flex-shrink:0;margin-top:7px;}
+.il-txt{font-family:var(--kr);font-weight:300;font-size:16px;line-height:1.9;color:#fff;opacity:.88;}
+.s-bdgs{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;}
+.s-bdg{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;padding:6px 15px;border-radius:18px;border:1px solid rgba(212,98,42,.5);color:var(--or);}
+#page-daepyo{background:var(--bk);overflow-y:auto;padding:50px 28px 50px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;}
+#dp-b{position:absolute;top:20%;left:50%;transform:translate(-50%,-50%);opacity:.12;pointer-events:none;animation:floatB 9s ease-in-out infinite;}
+.dpc{position:relative;z-index:10;max-width:540px;width:100%;text-align:center;margin-top:155px;}
+.dp-tag{font-family:var(--mono);font-size:12px;letter-spacing:4px;color:var(--or);display:block;margin-bottom:14px;}
+.dp-ko{font-family:var(--kr);font-weight:200;font-size:clamp(32px,6vw,52px);letter-spacing:3px;color:#fff;margin-bottom:6px;}
+.dp-en{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(19px,3.5vw,27px);color:#fff;opacity:.7;margin-bottom:26px;display:block;}
+.dp-dv{width:28px;height:1px;background:var(--or);margin:0 auto 22px;opacity:.6;}
+.dp-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;}
+.dp-card{background:rgba(44,51,59,.8);border:1px solid rgba(184,196,206,.09);border-radius:12px;padding:16px 10px;text-align:center;}
+.dc-ic{font-size:15px;color:var(--or);opacity:.7;margin-bottom:8px;}
+.dc-lb{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:#fff;opacity:.65;margin-bottom:6px;}
+.dc-vl{font-family:var(--kr);font-weight:300;font-size:15px;color:#fff;line-height:1.5;}
+.dp-body{font-family:var(--kr);font-weight:300;font-size:16px;line-height:2.1;color:#fff;opacity:.85;margin-bottom:20px;text-align:left;}
+.dp-list{list-style:none;text-align:left;display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.dp-list li{display:flex;gap:12px;align-items:flex-start;}
+.dp-bdgs{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;}
+.dp-bdg{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;padding:6px 15px;border-radius:18px;border:1px solid rgba(212,98,42,.5);color:var(--or);}
+@media(max-width:600px){
+  #main-b-bg{transform:translate(8vw,30vh) scale(.54);}
+}
+</style>
+</head>
+<body>
+
+<button id="back-btn" onclick="goBack()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M5 12l7-7M5 12l7 7"/></svg>
+  BACK
+</button>
+
+<!-- INTRO OVERLAY -->
+<div id="intro-overlay">
+  <div id="ripple-wrap"></div>
+  <div id="intro-b">
+    <svg width="560" height="420" viewBox="0 0 500 370" fill="none">
+      <g class="gL">
+        <path d="M244,160 C228,130 190,85 140,60 C96,38 48,50 24,86 C7,116 20,156 65,166 C115,178 190,173 244,162Z" fill="#1A1E22" stroke="rgba(184,196,206,.22)" stroke-width="1"/>
+        <path d="M244,160 C218,138 172,102 122,80" stroke="rgba(184,196,206,.33)" stroke-width="1.2" fill="none"/>
+        <path d="M244,160 C210,148 155,138 92,144" stroke="rgba(184,196,206,.18)" stroke-width=".9" fill="none"/>
+        <path d="M244,160 C205,158 148,165 80,180" stroke="rgba(184,196,206,.11)" stroke-width=".8" fill="none"/>
+      </g>
+      <g class="gR">
+        <path d="M256,160 C272,130 310,85 360,60 C404,38 452,50 476,86 C493,116 480,156 435,166 C385,178 310,173 256,162Z" fill="#1A1E22" stroke="rgba(184,196,206,.22)" stroke-width="1"/>
+        <path d="M256,160 C282,138 328,102 378,80" stroke="rgba(184,196,206,.33)" stroke-width="1.2" fill="none"/>
+        <path d="M256,160 C290,148 345,138 408,144" stroke="rgba(184,196,206,.18)" stroke-width=".9" fill="none"/>
+        <path d="M256,160 C295,158 352,165 420,180" stroke="rgba(184,196,206,.11)" stroke-width=".8" fill="none"/>
+      </g>
+      <g class="gL">
+        <path d="M240,175 C213,200 176,238 162,270 C153,294 176,302 240,175Z" fill="#1A1E22" stroke="rgba(184,196,206,.16)" stroke-width="1"/>
+        <ellipse cx="169" cy="264" rx="12" ry="8" fill="#D4622A" opacity=".88"/>
+        <ellipse cx="183" cy="277" rx="8" ry="5" fill="#F2ECD8" opacity=".42"/>
+      </g>
+      <g class="gR">
+        <path d="M260,175 C287,200 324,238 338,270 C347,294 324,302 260,175Z" fill="#1A1E22" stroke="rgba(184,196,206,.16)" stroke-width="1"/>
+        <ellipse cx="331" cy="264" rx="12" ry="8" fill="#D4622A" opacity=".88"/>
+        <ellipse cx="317" cy="277" rx="8" ry="5" fill="#F2ECD8" opacity=".42"/>
+      </g>
+      <path d="M234,170 C226,208 218,248 214,290" stroke="#07090b" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M266,170 C274,208 282,248 286,290" stroke="#07090b" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M246,134 C234,112 218,94 204,80" stroke="rgba(184,196,206,.48)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="202" cy="78" r="4" fill="rgba(184,196,206,.58)"/>
+      <path d="M254,134 C266,112 282,94 296,80" stroke="rgba(184,196,206,.48)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="298" cy="78" r="4" fill="rgba(184,196,206,.58)"/>
+      <ellipse cx="250" cy="162" rx="8" ry="36" fill="#0d1015" stroke="rgba(184,196,206,.16)" stroke-width=".5"/>
+    </svg>
+  </div>
+</div>
+
+<!-- PAGE 1: MAIN -->
+<div class="page active" id="page-main">
+  <div class="stars" id="s-main"></div>
+  <div id="main-b-bg">
+    <svg width="560" height="420" viewBox="0 0 500 370" fill="none">
+      <path d="M244,160 C228,130 190,85 140,60 C96,38 48,50 24,86 C7,116 20,156 65,166 C115,178 190,173 244,162Z" fill="#B8C4CE"/>
+      <path d="M244,160 C218,138 172,102 122,80" stroke="#F2ECD8" stroke-width="1.2" fill="none" opacity=".28"/>
+      <path d="M244,160 C210,148 155,138 92,144" stroke="#F2ECD8" stroke-width=".9" fill="none" opacity=".18"/>
+      <path d="M256,160 C272,130 310,85 360,60 C404,38 452,50 476,86 C493,116 480,156 435,166 C385,178 310,173 256,162Z" fill="#B8C4CE"/>
+      <path d="M256,160 C282,138 328,102 378,80" stroke="#F2ECD8" stroke-width="1.2" fill="none" opacity=".28"/>
+      <path d="M256,160 C290,148 345,138 408,144" stroke="#F2ECD8" stroke-width=".9" fill="none" opacity=".18"/>
+      <path d="M240,175 C213,200 176,238 162,270 C153,294 176,302 240,175Z" fill="#B8C4CE"/>
+      <ellipse cx="169" cy="264" rx="12" ry="8" fill="#D4622A" opacity=".65"/>
+      <ellipse cx="183" cy="277" rx="8" ry="5" fill="#F2ECD8" opacity=".3"/>
+      <path d="M260,175 C287,200 324,238 338,270 C347,294 324,302 260,175Z" fill="#B8C4CE"/>
+      <ellipse cx="331" cy="264" rx="12" ry="8" fill="#D4622A" opacity=".65"/>
+      <ellipse cx="317" cy="277" rx="8" ry="5" fill="#F2ECD8" opacity=".3"/>
+      <path d="M234,170 C226,208 218,248 214,290" stroke="#2C333B" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M266,170 C274,208 282,248 286,290" stroke="#2C333B" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M246,134 C234,112 218,94 204,80" stroke="#B8C4CE" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".45"/>
+      <circle cx="202" cy="78" r="4" fill="#B8C4CE" opacity=".5"/>
+      <path d="M254,134 C266,112 282,94 296,80" stroke="#B8C4CE" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".45"/>
+      <circle cx="298" cy="78" r="4" fill="#B8C4CE" opacity=".5"/>
+      <ellipse cx="250" cy="162" rx="8" ry="36" fill="#2C333B"/>
+    </svg>
+  </div>
+  <div id="main-content">
+    <div class="mc-tag">HAMPYEONG BUTTERFLY FESTIVAL 2026</div>
+    <div class="mc-title">Papilio<em>macilentus</em></div>
+    <div class="mc-ko">함평 나비 대 축 제</div>
+    <div class="mc-date">2026. 04. 24<span>—</span>05. 05 · 함평엑스포공원</div>
+    <div class="mc-btns">
+      <button class="btn-g" onclick="goTo('page-festival')">축제 알아보기 →</button>
+      <button class="btn-o" onclick="flyIn()">✦ 대표나비 만나기</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- daepyo overlay -->
+<div id="dov">
+  <div id="fly-b">
+    <svg width="500" height="375" viewBox="0 0 500 370" fill="none">
+      <g class="gL"><path d="M244,160 C228,130 190,85 140,60 C96,38 48,50 24,86 C7,116 20,156 65,166 C115,178 190,173 244,162Z" fill="#1A1E22" stroke="rgba(184,196,206,.24)" stroke-width="1"/><path d="M244,160 C218,138 172,102 122,80" stroke="rgba(184,196,206,.36)" stroke-width="1.2" fill="none"/><path d="M244,160 C210,148 155,138 92,144" stroke="rgba(184,196,206,.2)" stroke-width=".9" fill="none"/></g>
+      <g class="gR"><path d="M256,160 C272,130 310,85 360,60 C404,38 452,50 476,86 C493,116 480,156 435,166 C385,178 310,173 256,162Z" fill="#1A1E22" stroke="rgba(184,196,206,.24)" stroke-width="1"/><path d="M256,160 C282,138 328,102 378,80" stroke="rgba(184,196,206,.36)" stroke-width="1.2" fill="none"/><path d="M256,160 C290,148 345,138 408,144" stroke="rgba(184,196,206,.2)" stroke-width=".9" fill="none"/></g>
+      <g class="gL"><path d="M240,175 C213,200 176,238 162,270 C153,294 176,302 240,175Z" fill="#1A1E22" stroke="rgba(184,196,206,.16)" stroke-width="1"/><ellipse cx="169" cy="264" rx="12" ry="8" fill="#D4622A" opacity=".92"/><ellipse cx="183" cy="277" rx="8" ry="5" fill="#F2ECD8" opacity=".46"/></g>
+      <g class="gR"><path d="M260,175 C287,200 324,238 338,270 C347,294 324,302 260,175Z" fill="#1A1E22" stroke="rgba(184,196,206,.16)" stroke-width="1"/><ellipse cx="331" cy="264" rx="12" ry="8" fill="#D4622A" opacity=".92"/><ellipse cx="317" cy="277" rx="8" ry="5" fill="#F2ECD8" opacity=".46"/></g>
+      <path d="M234,170 C226,208 218,248 214,290" stroke="#1A1E22" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M266,170 C274,208 282,248 286,290" stroke="#1A1E22" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M246,134 C234,112 218,94 204,80" stroke="rgba(184,196,206,.52)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="202" cy="78" r="4" fill="rgba(184,196,206,.62)"/>
+      <path d="M254,134 C266,112 282,94 296,80" stroke="rgba(184,196,206,.52)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="298" cy="78" r="4" fill="rgba(184,196,206,.62)"/>
+      <ellipse cx="250" cy="162" rx="8" ry="36" fill="rgba(18,22,26,.95)" stroke="rgba(184,196,206,.2)" stroke-width=".5"/>
+    </svg>
+  </div>
+  <div id="fly-lbl">
+    <div class="fl-tag">REPRESENTATIVE BUTTERFLY · 2026</div>
+    <div class="fl-ko">긴꼬리제비나비</div>
+    <div class="fl-en">Papilio macilentus</div>
+  </div>
+  <div id="fly-btns">
+    <button class="fb-d" onclick="goTo('page-daepyo')">자세히 보기 →</button>
+    <button class="fb-c" onclick="closeFly()">✕ 닫기</button>
+  </div>
+</div>
+
+<!-- PAGE 2: FESTIVAL -->
+<div class="page" id="page-festival">
+  <div class="stars" id="s-fest"></div>
+  <div class="f-hdr"><span class="f-tag">FESTIVAL</span><div class="f-ttl">축제</div></div>
+  <div id="bnav">
+    <svg viewBox="0 0 500 440" fill="none" opacity=".14">
+      <!-- Upper Left Wing (배경) : 크고 둥근 타원형 -->
+      <path class="nwing" onclick="goTo('page-background')"
+        d="M248,165
+           C240,138 216,96 172,66
+           C132,40 80,38 46,64
+           C14,88 10,132 36,156
+           C68,184 158,182 248,166Z"
+        fill="#B8C4CE"/>
+      <path d="M248,165 C222,144 182,110 136,86" stroke="#F2ECD8" stroke-width="1.3" fill="none" opacity=".3"/>
+      <path d="M248,165 C214,154 164,148 100,152" stroke="#F2ECD8" stroke-width=".9" fill="none" opacity=".18"/>
+
+      <!-- Upper Right Wing (일정) -->
+      <path class="nwing" onclick="goTo('page-schedule')"
+        d="M252,165
+           C260,138 284,96 328,66
+           C368,40 420,38 454,64
+           C486,88 490,132 464,156
+           C432,184 342,182 252,166Z"
+        fill="#B8C4CE"/>
+      <path d="M252,165 C278,144 318,110 364,86" stroke="#F2ECD8" stroke-width="1.3" fill="none" opacity=".3"/>
+      <path d="M252,165 C286,154 336,148 400,152" stroke="#F2ECD8" stroke-width=".9" fill="none" opacity=".18"/>
+
+      <!-- Lower Left Wing (전시및행사) : 넓고 둥근 물방울형 -->
+      <path class="nwing" onclick="goTo('page-exhibition')"
+        d="M246,180
+           C232,206 206,244 174,284
+           C148,316 122,342 116,366
+           C110,390 130,402 158,394
+           C188,384 218,352 246,180Z"
+        fill="#B8C4CE"/>
+      <ellipse cx="140" cy="374" rx="16" ry="11" fill="#D4622A" opacity=".68"/>
+      <ellipse cx="160" cy="390" rx="10" ry="6" fill="#F2ECD8" opacity=".3"/>
+
+      <!-- Lower Right Wing (정보) -->
+      <path class="nwing" onclick="goTo('page-info')"
+        d="M254,180
+           C268,206 294,244 326,284
+           C352,316 378,342 384,366
+           C390,390 370,402 342,394
+           C312,384 282,352 254,180Z"
+        fill="#B8C4CE"/>
+      <ellipse cx="360" cy="374" rx="16" ry="11" fill="#D4622A" opacity=".68"/>
+      <ellipse cx="340" cy="390" rx="10" ry="6" fill="#F2ECD8" opacity=".3"/>
+
+      <!-- Antennae -->
+      <path d="M246,138 C236,116 222,98 208,82" stroke="#B8C4CE" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".5"/>
+      <circle cx="206" cy="80" r="4" fill="#B8C4CE" opacity=".55"/>
+      <path d="M254,138 C264,116 278,98 292,82" stroke="#B8C4CE" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".5"/>
+      <circle cx="294" cy="80" r="4" fill="#B8C4CE" opacity=".55"/>
+    </svg>
+    <div id="bnav-lbl">
+      <!-- 윗날개 중앙 -->
+      <div class="wlabel" style="left:25%;top:27%;"><div class="wl-num">01</div><div class="wl-name">배경</div></div>
+      <div class="wlabel" style="left:75%;top:27%;"><div class="wl-num">02</div><div class="wl-name">일정</div></div>
+      <!-- 아랫날개 중앙 -->
+      <div class="wlabel" style="left:34%;top:75%;"><div class="wl-num">03</div><div class="wl-name" style="font-size:clamp(13px,1.8vw,19px);">전시및행사</div></div>
+      <div class="wlabel" style="left:66%;top:75%;"><div class="wl-num">04</div><div class="wl-name">정보</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: SCHEDULE -->
+<div class="page" id="page-schedule">
+  <div class="stars" id="s-sched"></div>
+  <div class="sc-hdr">
+    <span class="sc-tag">SCHEDULE · 02</span>
+    <div class="sc-ttl">축제 일정</div>
+    <div class="sc-sub">2026. 04. 24 — 05. 05 · 12일간</div>
+    <div class="sc-div"></div>
+  </div>
+  <div class="cal-wrap">
+    <div class="cal-mhdr">
+      <div class="cal-mname">APRIL 2026</div>
+      <div class="cal-mbadge">축제기간 강조</div>
+    </div>
+    <div class="cal-dow-row">
+      <div class="cal-dow">MON</div><div class="cal-dow">TUE</div><div class="cal-dow">WED</div>
+      <div class="cal-dow">THU</div><div class="cal-dow fri">FRI</div>
+      <div class="cal-dow sat">SAT</div><div class="cal-dow sun">SUN</div>
+    </div>
+    <div class="cal-grid" id="apr-grid"></div>
+  </div>
+  <div class="cal-may-wrap">
+    <div class="cal-may-hdr">MAY 2026</div>
+    <div class="cal-may-grid" id="may-grid"></div>
+  </div>
+  <div id="day-panel">
+    <div class="dp-date" id="dp-date-lbl"></div>
+    <div class="dp-evs" id="dp-evs"></div>
+  </div>
+</div>
+
+<!-- PAGE 4: EXHIBITION -->
+<div class="page" id="page-exhibition">
+  <div class="stars" id="s-ex"></div>
+  <div class="ex-hdr"><span class="ex-tag">EXHIBITION · 03</span><div class="ex-ttl">전시및행사</div><div class="ex-div"></div></div>
+  <div class="ex-feature">
+    <img src="https://picsum.photos/seed/hampyeong1/800/450" alt="나비생태관" loading="lazy">
+    <div class="ex-feature-body"><div class="ex-fnum">FEATURE · 01</div><div class="ex-fname">나비생태관 특별 전시</div><div class="ex-fdesc">긴꼬리제비나비를 비롯한 200여 종의 살아있는 나비와 생태 영상. 한살이 전 과정을 관찰할 수 있습니다.</div></div>
+  </div>
+  <div class="ex-grid">
+    <div class="ex-card"><img src="https://picsum.photos/seed/hampyeong2/600/450" alt="" loading="lazy"><div class="ex-card-body"><div class="ex-cnum">02</div><div class="ex-cname">나비 날리기 체험</div><div class="ex-cdesc">손 위에 올리고 자연으로 방사</div></div></div>
+    <div class="ex-card"><img src="https://picsum.photos/seed/hampyeong3/600/450" alt="" loading="lazy"><div class="ex-card-body"><div class="ex-cnum">03</div><div class="ex-cname">야생화 정원 산책</div><div class="ex-cdesc">3만 송이 봄꽃 힐링 코스</div></div></div>
+    <div class="ex-card"><img src="https://picsum.photos/seed/hampyeong4/600/450" alt="" loading="lazy"><div class="ex-card-body"><div class="ex-cnum">04</div><div class="ex-cname">곤충 표본 만들기</div><div class="ex-cdesc">전문 도슨트와 함께하는 클래스</div></div></div>
+    <div class="ex-card"><img src="https://picsum.photos/seed/hampyeong5/600/450" alt="" loading="lazy"><div class="ex-card-body"><div class="ex-cnum">05</div><div class="ex-cname">함평 전통 장터</div><div class="ex-cdesc">지역 특산물과 향토 음식 마당</div></div></div>
+  </div>
+</div>
+
+<!-- PAGE 5: BACKGROUND -->
+<div class="page sub-pg" id="page-background">
+  <div class="stars" id="s-bg"></div>
+  <div class="sub-ct">
+    <span class="s-tag">BACKGROUND · 01</span><div class="s-ttl">축제의 배경</div><div class="s-div"></div>
+    <p class="s-body">함평나비대축제는 청정 자연환경을 보유한 전남 함평에서 매년 봄, 나비와 꽃이 어우러지는 생태 문화 축제입니다. 1999년 첫 개최 이후 26년의 역사를 이어오며 국내 대표 생태 관광 축제로 자리잡았습니다.</p>
+    <ul class="s-list">
+      <li><div class="il-dot"></div><div class="il-txt">1999년 첫 개최 · 올해로 제 26회</div></li>
+      <li><div class="il-dot"></div><div class="il-txt">누적 방문객 100만 명 이상</div></li>
+      <li><div class="il-dot"></div><div class="il-txt">전남 함평군 함평읍 엑스포로 23 · 함평엑스포공원</div></li>
+    </ul>
+    <!-- 축제 사진 그리드 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;text-align:left;">
+      <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);">
+        <img src="https://picsum.photos/seed/butterfly-festival-main/400/280" alt="나비대축제 메인" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;">
+        <div style="padding:8px 10px;font-family:var(--kr);font-size:12px;color:#fff;opacity:.75;">나비 날리기 행사</div>
+      </div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);">
+        <img src="https://picsum.photos/seed/spring-flowers-park/400/280" alt="야생화 정원" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;">
+        <div style="padding:8px 10px;font-family:var(--kr);font-size:12px;color:#fff;opacity:.75;">야생화 정원</div>
+      </div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);">
+        <img src="https://picsum.photos/seed/butterfly-ecology/400/280" alt="나비 생태관" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;">
+        <div style="padding:8px 10px;font-family:var(--kr);font-size:12px;color:#fff;opacity:.75;">나비 생태관</div>
+      </div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);">
+        <img src="https://picsum.photos/seed/hampyeong-expo/400/280" alt="함평엑스포공원" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;">
+        <div style="padding:8px 10px;font-family:var(--kr);font-size:12px;color:#fff;opacity:.75;">함평엑스포공원</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: INFO -->
+<div class="page sub-pg" id="page-info">
+  <div class="stars" id="s-info"></div>
+  <div class="sub-ct">
+    <span class="s-tag">INFORMATION · 04</span><div class="s-ttl">찾아오는 길</div><div class="s-div"></div>
+    <p class="s-body">전남 함평군 함평읍 엑스포로 23 · 함평엑스포공원</p>
+    <!-- 지도 -->
+    <div style="width:100%;border-radius:14px;overflow:hidden;margin-bottom:20px;border:1px solid rgba(255,255,255,.12);">
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=126.51,35.05,126.56,35.08&layer=mapnik&marker=35.064,126.534"
+        width="100%" height="340" style="border:0;display:block;" loading="lazy"
+        title="함평엑스포공원 지도"></iframe>
+    </div>
+    <ul class="s-list">
+      <li><div class="il-dot"></div><div class="il-txt"><strong style="color:#fff;font-weight:400;">버스</strong> · 광주 유스퀘어 → 함평 직행 (40분) · 터미널 도보 10분</div></li>
+      <li><div class="il-dot"></div><div class="il-txt"><strong style="color:#fff;font-weight:400;">자가용</strong> · 서해안고속도로 함평IC → 함평읍 방면 10분 · 무료주차</div></li>
+      <li><div class="il-dot"></div><div class="il-txt"><strong style="color:#fff;font-weight:400;">기차</strong> · KTX 광주송정역 → 함평 버스 50분 / 무궁화호 함평역 도보 15분</div></li>
+    </ul>
+    <div class="s-bdgs"><span class="s-bdg">입장료 무료</span><span class="s-bdg">주차 무료</span><span class="s-bdg">반려동물 가능</span></div>
+  </div>
+</div>
+
+<!-- PAGE 7: 대표나비 -->
+<div class="page" id="page-daepyo">
+  <div class="stars" id="s-daepyo"></div>
+  <div id="dp-b">
+    <svg width="520" height="390" viewBox="0 0 500 370" fill="none">
+      <path d="M244,160 C228,130 190,85 140,60 C96,38 48,50 24,86 C7,116 20,156 65,166 C115,178 190,173 244,162Z" fill="#B8C4CE"/>
+      <path d="M256,160 C272,130 310,85 360,60 C404,38 452,50 476,86 C493,116 480,156 435,166 C385,178 310,173 256,162Z" fill="#B8C4CE"/>
+      <path d="M240,175 C213,200 176,238 162,270 C153,294 176,302 240,175Z" fill="#B8C4CE"/><ellipse cx="169" cy="264" rx="12" ry="8" fill="#D4622A" opacity=".85"/>
+      <path d="M260,175 C287,200 324,238 338,270 C347,294 324,302 260,175Z" fill="#B8C4CE"/><ellipse cx="331" cy="264" rx="12" ry="8" fill="#D4622A" opacity=".85"/>
+      <path d="M234,170 C226,208 218,248 214,290" stroke="#2C333B" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M266,170 C274,208 282,248 286,290" stroke="#2C333B" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <ellipse cx="250" cy="162" rx="8" ry="36" fill="#2C333B"/>
+    </svg>
+  </div>
+  <div class="dpc">
+    <span class="dp-tag">REPRESENTATIVE BUTTERFLY · 2026</span>
+    <div class="dp-ko">긴꼬리제비나비</div><span class="dp-en">Papilio macilentus</span><div class="dp-dv"></div>
+    <div class="dp-cards">
+      <div class="dp-card"><div class="dc-ic">◈</div><div class="dc-lb">분류</div><div class="dc-vl">제비나비과<br>나비목</div></div>
+      <div class="dp-card"><div class="dc-ic">✦</div><div class="dc-lb">날개폭</div><div class="dc-vl">90–110<br>mm</div></div>
+      <div class="dp-card"><div class="dc-ic">●</div><div class="dc-lb">서식지</div><div class="dc-vl">산지<br>숲가장자리</div></div>
+    </div>
+    <p class="dp-body">긴꼬리제비나비는 우리나라 제비나비과 중 가장 우아한 자태를 지닌 대형 나비입니다. 짙은 검은 날개에 섬세하게 새겨진 은빛 날개맥, 뒷날개의 꼬리 모양 돌기, 그리고 날개 끝의 주황빛 마킹이 신비로운 분위기를 자아냅니다.</p>
+    <ul class="dp-list">
+      <li><div class="il-dot"></div><div class="il-txt"><strong style="color:#F2ECD8;font-weight:400;">출현 시기</strong> · 4월 하순~9월, 연 2–3회 발생</div></li>
+      <li><div class="il-dot"></div><div class="il-txt"><strong style="color:#F2ECD8;font-weight:400;">먹이식물</strong> · 산초나무, 황벽나무, 탱자나무 등 운향과</div></li>
+      <li><div class="il-dot"></div><div class="il-txt"><strong style="color:#F2ECD8;font-weight:400;">비행 특성</strong> · 느리고 우아한 날갯짓, 꽃꿀을 즐겨 찾음</div></li>
+      <li><div class="il-dot"></div><div class="il-txt"><strong style="color:#F2ECD8;font-weight:400;">분포</strong> · 한국·일본·중국 동부, 한반도 전역 산지</div></li>
+    </ul>
+    <div class="dp-bdgs"><span class="dp-bdg">제비나비과</span><span class="dp-bdg">대형 나비</span><span class="dp-bdg">2026 대표 나비</span><span class="dp-bdg">국내 서식종</span></div>
+  </div>
+</div>
+
+<script>
+const SCHED={
+  '0424':{lbl:'4월 24일 금 · 개막일',ev:[{t:'14:00',n:'개막식 · 대표나비 소개'},{t:'15:30',n:'긴꼬리제비나비 첫 방사'}]},
+  '0425':{lbl:'4월 25일 토',ev:[{t:'10:00',n:'나비 방사 체험'},{t:'13:00',n:'표본 만들기 (주말)'},{t:'14:00',n:'나비 방사 체험'},{t:'16:00',n:'야생화 정원 해설'}]},
+  '0426':{lbl:'4월 26일 일',ev:[{t:'10:00',n:'나비 방사 체험'},{t:'14:00',n:'나비 방사 체험'},{t:'15:30',n:'나비 사진 촬영 행사'}]},
+  '0427':{lbl:'4월 27일 월',ev:[{t:'10:00',n:'나비 방사 체험'},{t:'11:00',n:'생태 해설 투어'},{t:'14:00',n:'나비 방사 체험'}]},
+  '0428':{lbl:'4월 28일 화',ev:[{t:'10:00',n:'나비 방사 체험'},{t:'14:00',n:'나비 방사 체험'},{t:'15:00',n:'어린이 체험 교실'}]},
+  '0429':{lbl:'4월 29일 수',ev:[{t:'10:00',n:'나비 방사 체험'},{t:'14:00',n:'나비 방사 체험'}]},
+  '0430':{lbl:'4월 30일 목',ev:[{t:'10:00',n:'나비 방사 체험'},{t:'14:00',n:'나비 방사 체험'},{t:'16:00',n:'생태 사진전 관람'}]},
+  '0501':{lbl:'5월 1일 금',ev:[{t:'10:00',n:'나비 방사 체험'},{t:'14:00',n:'나비 방사 체험'},{t:'19:00',n:'함평 야시장 (야간)'}]},
+  '0502':{lbl:'5월 2일 토',ev:[{t:'10:00',n:'나비 방사 체험'},{t:'13:00',n:'표본 만들기 (주말)'},{t:'14:00',n:'나비 방사 체험'},{t:'20:00',n:'야간 특별 프로그램'}]},
+  '0503':{lbl:'5월 3일 일',ev:[{t:'10:00',n:'나비 방사 체험'},{t:'14:00',n:'나비 방사 체험'},{t:'15:00',n:'가족 패키지 프로그램'}]},
+  '0504':{lbl:'5월 4일 월',ev:[{t:'10:00',n:'나비 방사 체험'},{t:'14:00',n:'나비 방사 체험'},{t:'16:00',n:'마지막 주 특별 전시'}]},
+  '0505':{lbl:'5월 5일 화 · 폐막일',ev:[{t:'10:00',n:'마지막 나비 방사 체험'},{t:'15:00',n:'감사 공연 및 시상식'},{t:'17:00',n:'폐막식'}]},
+};
+
+/* stars */
+function mkStars(id,n){
+  const el=document.getElementById(id);if(!el)return;
+  for(let i=0;i<n;i++){
+    const s=document.createElement('div');s.className='star';
+    const sz=Math.random()*2+.4;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${2.5+Math.random()*4}s;--dly:${Math.random()*4}s;--lo:${.04+Math.random()*.07};--hi:${.2+Math.random()*.26};`;
+    el.appendChild(s);
+  }
+}
+['s-main','s-fest','s-sched','s-ex','s-bg','s-info','s-daepyo'].forEach((id,i)=>mkStars(id,i===0?80:38));
+
+/* non-intro wing anims */
+document.querySelectorAll('.gL,.gR').forEach(e=>{
+  if(e.closest('#intro-b')||e.closest('#fly-b'))return;
+  e.style.animation=e.classList.contains('gL')?'wL 4s ease-in-out infinite':'wR 4s ease-in-out infinite';
+  e.style.transformOrigin='250px 162px';
+});
+
+/* page nav */
+const hist=['page-main'];let cur='page-main';
+function goTo(id){
+  if(id===cur)return;if(flyActive)_closeFly(false);
+  document.getElementById(cur).classList.remove('active');
+  document.getElementById(id).classList.add('active');
+  hist.push(id);cur=id;updBack();
+}
+function goBack(){
+  if(hist.length<=1)return;hist.pop();
+  const pid=hist[hist.length-1];
+  document.getElementById(cur).classList.remove('active');
+  document.getElementById(pid).classList.add('active');
+  cur=pid;updBack();
+}
+function updBack(){
+  const b=document.getElementById('back-btn');
+  (hist.length>1&&cur!=='page-main')?b.classList.add('show'):b.classList.remove('show');
+}
+
+/* INTRO: pure CSS keyframe flight, JS only for timing */
+function startIntro(){
+  const b   =document.getElementById('intro-b');
+  const ov  =document.getElementById('intro-overlay');
+  const mc  =document.getElementById('main-content');
+
+  /* kick off CSS animation */
+  setTimeout(()=>{b.style.opacity='1';b.classList.add('flying');},250);
+
+  /* bf-fly 끝나는 순간 transform 중앙에 고정 — 다른 곳으로 못 가게 */
+  setTimeout(()=>{
+    b.style.animation='none';
+    b.style.transform='translate(-50%,-50%) scale(0.28)';
+  },2260);
+
+  /* 날개 느리게 (착지 직전) */
+  setTimeout(()=>b.classList.add('landing'), 1700);
+
+  /* 착지 후 나비 먼저 사라짐 → 그 다음 파문 시작 */
+  setTimeout(()=>{
+    /* 나비 fade out */
+    b.style.transition='opacity .25s ease';
+    b.style.opacity='0';
+  },2200);
+
+  setTimeout(()=>{
+    const rw=document.getElementById('ripple-wrap');
+    /* 파문 4개 시차 */
+    [0,170,320,470].forEach((dly,i)=>{
+      const r=document.createElement('div');
+      r.className='ripple-ring';
+      r.style.width=(90+i*35)+'px';
+      r.style.height=(62+i*24)+'px';
+      rw.appendChild(r);
+      setTimeout(()=>{
+        r.style.animation=`ringExpand ${0.85+i*0.13}s ease-out forwards`;
+      },dly);
+    });
+    /* 파문 퍼지면서 overlay 페이드 */
+    setTimeout(()=>{
+      ov.style.transition='opacity .9s ease';
+      ov.style.opacity='0';
+      setTimeout(()=>{
+        mc.style.opacity='1';
+        setTimeout(()=>{ov.style.display='none';},700);
+      },200);
+    },300);
+  },2480);
+}
+
+/* daepyo fly-in */
+let flyActive=false;
+function flyIn(){
+  if(flyActive)return;flyActive=true;
+  const ov=document.getElementById('dov');const fb=document.getElementById('fly-b');
+  ov.style.opacity='1';ov.style.pointerEvents='all';ov.classList.add('active');
+  fb.querySelectorAll('.gL').forEach(e=>{e.style.animation='wL .25s ease-in-out infinite';e.style.transformOrigin='right center';});
+  fb.querySelectorAll('.gR').forEach(e=>{e.style.animation='wR .25s ease-in-out infinite';e.style.transformOrigin='left center';});
+  fb.style.transition='none';fb.style.opacity='1';
+  fb.style.transform='translate(-130vw,-70vh) scale(.2) rotate(25deg)';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    fb.style.transition='transform 1.5s cubic-bezier(.2,1,.3,1)';
+    fb.style.transform='translate(-50%,-60%) scale(1) rotate(0deg)';
+  }));
+  setTimeout(()=>{
+    fb.classList.add('land');
+    fb.querySelectorAll('.gL').forEach(e=>{e.style.animation='wL 4s ease-in-out infinite';});
+    fb.querySelectorAll('.gR').forEach(e=>{e.style.animation='wR 4s ease-in-out infinite';});
+    ov.classList.add('labels-on');
+  },1550);
+}
+function _closeFly(animate=true){
+  flyActive=false;
+  const ov=document.getElementById('dov');const fb=document.getElementById('fly-b');
+  ov.classList.remove('labels-on');fb.classList.remove('land');
+  if(animate){
+    fb.querySelectorAll('.gL').forEach(e=>{e.style.animation='wL .25s ease-in-out infinite';});
+    fb.querySelectorAll('.gR').forEach(e=>{e.style.animation='wR .25s ease-in-out infinite';});
+    fb.style.transition='transform .8s ease-in,opacity .5s .25s ease';
+    fb.style.transform='translate(110vw,55vh) scale(.22) rotate(-18deg)';
+    fb.style.opacity='0';
+    setTimeout(()=>{
+      ov.classList.remove('active');ov.style.opacity='0';ov.style.pointerEvents='none';
+      fb.classList.remove('fly-in');fb.style.transform='translate(-120vw,-60vh) scale(.18) rotate(-22deg)';fb.style.opacity='0';
+    },900);
+  }else{
+    ov.classList.remove('active');ov.style.opacity='0';ov.style.pointerEvents='none';
+    fb.classList.remove('fly-in');fb.style.transform='translate(-120vw,-60vh) scale(.18) rotate(-22deg)';fb.style.opacity='0';
+  }
+}
+function closeFly(){_closeFly(true);}
+
+/* April 2026 calendar */
+/* April 1 = Wednesday → Mon=0 index, Wed=2 */
+const APR_DOW=2;
+const FEST=new Set(['0424','0425','0426','0427','0428','0429','0430','0501','0502','0503','0504','0505']);
+function buildApr(){
+  const g=document.getElementById('apr-grid');
+  for(let i=0;i<APR_DOW;i++){const d=document.createElement('div');d.className='cal-cell empty';g.appendChild(d);}
+  for(let day=1;day<=30;day++){
+    const key='04'+(day<10?'0':'')+day;
+    const isFest=FEST.has(key);
+    const d=document.createElement('div');
+    d.className='cal-cell '+(isFest?'festival'+(day===24?' open-close':''):'normal');
+    d.textContent=day;
+    if(isFest){
+      d.dataset.key=key;d.onclick=()=>pickDay(key);
+      const dot=document.createElement('div');dot.className='cdot';d.appendChild(dot);
+    }
+    g.appendChild(d);
+  }
+  const used=APR_DOW+30;const rem=(7-used%7)%7;
+  for(let i=0;i<rem;i++){const d=document.createElement('div');d.className='cal-cell empty';g.appendChild(d);}
+}
+function buildMay(){
+  const g=document.getElementById('may-grid');
+  /* May 1 2026 = Friday → index 4 */
+  for(let i=0;i<4;i++){const d=document.createElement('div');d.className='cal-cell empty';g.appendChild(d);}
+  for(let day=1;day<=5;day++){
+    const key='05'+(day<10?'0':'')+day;
+    const d=document.createElement('div');
+    d.className='cal-cell festival'+(day===5?' open-close':'');
+    d.textContent=day;d.dataset.key=key;d.onclick=()=>pickDay(key);
+    const dot=document.createElement('div');dot.className='cdot';d.appendChild(dot);
+    g.appendChild(d);
+  }
+}
+function pickDay(key){
+  document.querySelectorAll('.cal-cell.sel').forEach(d=>d.classList.remove('sel'));
+  const el=document.querySelector(`.cal-cell[data-key="${key}"]`);if(el)el.classList.add('sel');
+  const data=SCHED[key];if(!data)return;
+  document.getElementById('dp-date-lbl').textContent=data.lbl;
+  const ev=document.getElementById('dp-evs');ev.innerHTML='';
+  data.ev.forEach(e=>{ev.innerHTML+=`<div class="dp-ev"><div class="dp-time">${e.t}</div><div class="dp-name">${e.n}</div></div>`;});
+  document.getElementById('day-panel').classList.add('show');
+}
+
+buildApr();buildMay();startIntro();
+</script>
+</body>
+</html>
